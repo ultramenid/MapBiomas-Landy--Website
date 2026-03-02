@@ -26,7 +26,7 @@
                 @if (app()->getLocale() == 'id')
                     <a href="{{ asset('assets/files/ATBD Mapbiomas ID Col 4.1.pdf') }}"
                 @else
-                    <a href="{{ asset('assets/files/ATBD Mapbiomas ID Col 4.1.pdf') }}"
+                    <a href="{{ asset('assets/files/ATBD Mapbiomas ID Col 4.1 EN.pdf') }}"
                 @endif
 
             class="underline font-bold">Algorithm Theoretical Basis Documents (ATBD)</a> </p>
