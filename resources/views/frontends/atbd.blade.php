@@ -24,7 +24,7 @@
             <p class="mt-4 sm:text-base text-sm">{{__('The sections below describe the characteristics, networks, and a brief summary of the methodology applied by MapBiomas Indonesia to produce a time-series of land-use and land-cover data showing annual transitions over the collection period.') }}</p>
             <p class="mt-4">{{__('The applied methodology is presented in the') }}
                 @if (app()->getLocale() == 'id')
-                    <a href="{{ asset('assets/files/ATBD Mapbiomas ID Col 4.1.pdf') }}"
+                    <a href="{{ asset('assets/files/ATBD Mapbiomas ID Col 4.1 ID.pdf') }}"
                 @else
                     <a href="{{ asset('assets/files/ATBD Mapbiomas ID Col 4.1 EN.pdf') }}"
                 @endif
