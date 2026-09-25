@@ -33,6 +33,17 @@ class EditNewsComponent extends Component
     }
 
     public function uploadImage(){
+        $allowedMimes = [
+            'image/png', 'image/jpeg', 'image/bmp', 'image/gif', 'image/webp',
+            'video/mp4', 'video/x-msvideo', 'video/avi', 'video/3gpp', 'video/quicktime', 'audio/mp4', 'audio/x-m4a',
+        ];
+        if (!in_array(strtolower($this->photo->getClientOriginalExtension()), ['png', 'jpeg', 'bmp', 'gif','jpg','webp','mp4', 'avi', '3gp', 'mov', 'm4a'])
+            || !in_array(strtolower($this->photo->getMimeType()), $allowedMimes)) {
+            $this->reset('photo');
+            Toaster::error('File not supported!');
+            return null;
+        }
+
         $file = $this->photo->store('public/files/photos');
         $foto = $this->photo->hashName();
 
@@ -58,9 +69,12 @@ class EditNewsComponent extends Component
             if(!$this->photo){
                 $name = $this->uphoto;
             }else{
+                    $name = $this->uploadImage();
+                    if ($name === null) {
+                        return;
+                    }
                     Storage::delete('public/files/photos/'.$this->uphoto);
                     Storage::delete('public/files/photos/thumbnail/'.$this->uphoto);
-                    $name=  $this->uploadImage();
 
 
             }

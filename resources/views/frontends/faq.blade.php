@@ -33,7 +33,7 @@
                 >
                     <div class="flex justify-between space-x-10">
                         <a class="text-black font-semibold">
-                            {!! $item->question !!}
+                            {{ $item->question }}
                         </a>
                         <svg
                             x-show="icon"

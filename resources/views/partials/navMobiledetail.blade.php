@@ -1,12 +1,12 @@
 <!-- {{-- nav mobile --}} -->
 <header class="bg-auriga-biru sticky top-0 z-30 select-none">
-    <div x-data="{ open: false }" class="px-4 py-3 bg-white z-10 sm:hidden block">
+    <div x-data="{ open: false }" class="px-4 py-3 bg-white z-10 lg:hidden block">
         <div class="flex justify-between items-center">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-landy " viewBox="0 0 20 20" fill="currentColor" @click="open = true">
                 <path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h6a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd" />
               </svg>
 
-              <img src="{{ asset('assets/logo-landy.png') }}" alt="Mapbiomas Fire Indonesia" class="sm:h-12 h-10">
+              <img src="{{ asset('assets/logo-landy.png') }}" alt="Mapbiomas Fire Indonesia" class="lg:h-12 h-10">
               <div class="flex gap-2 z-50 text-gray-200">
                 <a href="{{ route(Route::currentRouteName(), ['en',$data->id, $data->slug]) }}"  class="cursor-pointer @if(App::getLocale() == 'en') text-landy font-bold @endif">EN</a>
                 <div class="border-l border-black"></div>
@@ -105,7 +105,7 @@
         </div>
     </div>
 
-    <div class="max-w-6xl mx-auto px-4 -py-2 sm:block hidden">
+    <div class="max-w-6xl mx-auto px-4 -py-2 lg:block hidden">
         <div class="flex justify-between px-3">
             <a></a>
         </div>

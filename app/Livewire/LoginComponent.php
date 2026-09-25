@@ -4,6 +4,8 @@ namespace App\Livewire;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Str;
 use Livewire\Component;
 
 class LoginComponent extends Component
@@ -13,24 +15,35 @@ class LoginComponent extends Component
     public function getDatauser(){
         return DB::table('users')->where('email', $this->email)->first();
     }
+
     public function login(){
-        // dd($this->getDatauser());
         $this->validate([
-            'email' => 'required',
+            'email' => 'required|email',
             'password' => 'required'
         ]);
-        //log in logic
-        if($this->getDatauser() and Hash::check($this->password, $this->getDatauser()->password ) and $this->email == $this->getDatauser()->email) {
-           session([
-               'id' => $this->getDatauser()->id,
-               'role_id'=> $this->getDatauser()->role_id
-           ]);
-        //    dd('oke');
-           redirect('/cms/dashboard');
-        //    $this->redirect('/cms/dashboard', navigate: true);
 
-        }else{
-            session()->flash('message', 'email & Password not valid.');
+        $throttleKey = Str::transliterate(Str::lower($this->email).'|'.request()->ip());
+
+        if (RateLimiter::tooManyAttempts($throttleKey, 5)) {
+            $seconds = RateLimiter::availableIn($throttleKey);
+            session()->flash('message', "Too many login attempts. Please try again in {$seconds} seconds.");
+            return;
+        }
+
+        $user = $this->getDatauser();
+
+        // Check user credentials
+        if ($user && Hash::check($this->password, $user->password) && $this->email === $user->email) {
+            RateLimiter::clear($throttleKey);
+            session()->regenerate();
+            session([
+                'id' => $user->id,
+                'role_id' => $user->role_id
+            ]);
+            redirect('/cms/dashboard');
+        } else {
+            RateLimiter::hit($throttleKey, 300); // Lockout for 5 minutes after 5 failed attempts
+            session()->flash('message', 'Email or password not valid.');
         }
     }
     public function render()

@@ -17,7 +17,7 @@
      <!-- hero -->
       <div class="relative mt-2">
         <img src="{{ asset('assets/landy-hero.jpeg') }}" alt="Mapbiomas Landy - Indonesia" class="sm:h-[70vh] h-[40vh] w-full object-top object-cover relative">
-        <div class="absolute sm:bottom-32 bottom-16 sm:left-[22rem] left-5">
+        <div class="absolute sm:bottom-32 bottom-16 sm:left-[8rem] lg:left-[22rem] left-5">
             <p class="text-white sm:text-5xl text-4xl font-black mb-6 leading normal sm:w-7/12 w-full">{{__('Learning from the Past for the Future') }}</p>
             <a href="https://plataforma.mapbiomas.org/coverage/coverage_lclu?t[regionKey]=indonesia" class=" bg-landy text-white  px-4 py-1 font-semibold">{{__('Access The Platform') }}</a>
 
@@ -29,7 +29,7 @@
        <div class="max-w-6xl mx-auto flex sm:flex-row flex-col gap-5 px-4 mt-12">
             <div class=" w-full  ">
                 <a class="bg-landy px-4 py-1 text-white font-semibold capitalize">{{__('news') }}</a>
-                <div class="flex flex-row  h-full   gap-4  snap-x snap-mandatory mt-4">
+                <div class="flex flex-row  h-full   gap-4  overflow-x-auto snap-x snap-mandatory mt-4">
                     @foreach ($news as $item)
                         <!-- card -->
                         <div class="sm:flex-shrink flex-shrink-0 snap-center sm:6/12 w-full ">
@@ -71,7 +71,7 @@
                     <a class="bg-landy p-2 text-white font-semibold sm:text-base text-xs mb-8 sm:text-left text-center ">{{__('Understand How MapBiomas Indonesia Works') }}</a>
                 </div>
 
-                <div class="flex sm:flex-row flex-col items-center space-y-4 sm:space-x-8 space-x-0 mt-8">
+                <div class="flex sm:flex-row flex-col items-center space-y-4 sm:space-x-8 space-x-0 sm:flex-wrap sm:justify-center mt-8">
                     <a href="" class="text-center">
                         <img loading="lazy" src="{{ asset('assets/methodology/MapBiomas_1-Mapbiomas_Mosaic.png') }}" alt="" class="w-16 h-16 inline-flex justify-center">
                         <p style="color: #7f8282;" class="mt-2 font-semibold "> {{__('Mosaic MapBiomas')}}</p>

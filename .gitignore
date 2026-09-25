@@ -17,3 +17,31 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor / IDE files
+*.sublime-workspace
+*.sublime-project
+*.swp
+
+# Logs
+*.log
+/storage/logs/*.log
+
+# Laravel caches
+/bootstrap/cache/*.php
+/bootstrap/cache/packages.php
+/bootstrap/cache/services.php
+/storage/framework/cache/data/*
+/storage/framework/sessions/*
+/storage/framework/views/*
+/storage/framework/testing/*
+/storage/app/public/*
+/storage/debugbar/*
+
+# Temporary files
+*.tmp
+*.bak

@@ -1,7 +1,3 @@
-@extends('layouts.dashboardLayouts')
-
-@section('content')
-    @include('partials.backendHeader')
-    @include('partials.backendNav')
+<x-cms-layout title="Edit mural">
     <livewire:edit-mural-component :id="$idMural" />
-@endsection
+</x-cms-layout>

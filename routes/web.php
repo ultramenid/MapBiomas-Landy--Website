@@ -23,8 +23,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::redirect('/', '/en');
 
-Route::middleware([setLanguage::class])->group(function () {
-    Route::group(['prefix' => '{lang}'], function () {
+Route::middleware([setLanguage::class])
+    ->prefix('{lang}')
+    ->whereIn('lang', ['id', 'en'])
+    ->group(function () {
         Route::get('/', [IndexController::class, 'index'])->name('index');
         Route::get('/about', [PagesController::class, 'about'])->name('about');
         Route::get('/refrencemap', [PagesController::class, 'refrencemap'])->name('refrencemap');
@@ -47,10 +49,7 @@ Route::middleware([setLanguage::class])->group(function () {
         Route::get('/murals', [MuralController::class, 'index'])->name('murals');
         Route::get('/newnevent', [NewsController::class, 'newsnevent'])->name('newsnevent');
         Route::get('/factsheet', [FactsheetController::class, 'index'])->name('factsheet');
-
-
     });
-});
 
 
 //redirect to login page if user has no session
@@ -81,9 +80,7 @@ Route::middleware([checkSession::class])->group(function () {
     Route::get('/cms/pagefactsheet', [FactsheetController::class, 'cmsfactsheet']);
 
 
-    Route::group(['prefix' => '/cms/fire-filemanager'], function () {
-        \UniSharp\LaravelFilemanager\Lfm::routes();
-    });
+    Route::post('/cms/tinymce-upload', [\App\Http\Controllers\CmsUploadController::class, 'upload'])->name('cms.tinymce.upload');
 
 });
 

@@ -54,7 +54,7 @@
                 {{-- karakteristik --}}
                 <div class="" x-cloak style="display: none !important; color: #7f8282;" x-show="tabs === 'karakteristik'">
                     <p >{!!__('Land-use and land-cover maps of MapBiomas Indonesia were produced by applying a pixel-based approach on Landsat images. Machine-learning algorithms were developed to analyze the images using the tremendous cloud processing capacity provided by the Google Earth Engine.') !!}</p>
-                    <div class="flex  justify-between items-center w-full mt-4">
+                    <div class="flex flex-col sm:flex-row justify-between items-center w-full mt-4 gap-4 sm:gap-0">
                         <div class="flex flex-col justify-center items-center w-full">
                             <img src=" {{ asset('assets/atbd/1.png') }}" alt="" width="100px" height="100px" />
                             <a class="mt-4">{{__('Collection of Landsat Images') }}</a>

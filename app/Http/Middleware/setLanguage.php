@@ -15,7 +15,14 @@ class setLanguage
      */
     public function handle(Request $request, Closure $next): Response
     {
-        app()->setLocale($request->lang);
+        $lang = $request->route('lang') ?? $request->lang;
+        $allowed = ['id', 'en'];
+
+        if (!in_array($lang, $allowed, true)) {
+            $lang = config('app.fallback_locale', 'en');
+        }
+
+        app()->setLocale($lang);
         return $next($request);
     }
 }

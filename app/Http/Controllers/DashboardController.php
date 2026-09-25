@@ -14,6 +14,24 @@ class DashboardController extends Controller
     public function index(){
         $title = 'MapBiomas Landy - Dashboard';
         $nav = 'dashboard';
-        return view('backends.dashboard', compact('title', 'nav'));
+
+        $stats = [
+            'news' => \Illuminate\Support\Facades\DB::table('news')->count(),
+            'faqs' => \Illuminate\Support\Facades\DB::table('faq')->count(),
+            'infographics' => \Illuminate\Support\Facades\DB::table('infographic')->count(),
+            'murals' => \Illuminate\Support\Facades\DB::table('murals')->count(),
+        ];
+        $recentNews = \Illuminate\Support\Facades\DB::table('news')
+            ->select('id', 'titleID', 'publishdate', 'category', 'status')
+            ->orderByDesc('publishdate')
+            ->limit(5)
+            ->get();
+        $recentFaqs = \Illuminate\Support\Facades\DB::table('faq')
+            ->select('id', 'questionID')
+            ->orderByDesc('id')
+            ->limit(5)
+            ->get();
+
+        return view('backends.dashboard', compact('title', 'nav', 'stats', 'recentNews', 'recentFaqs'));
     }
 }

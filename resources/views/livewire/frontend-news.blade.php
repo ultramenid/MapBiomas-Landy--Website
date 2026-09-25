@@ -1,7 +1,7 @@
 <div>
-    <div class="flex items-center justify-between">
+    <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <a class="text-3xl font-semibold capitalize">{{__('news & event') }}</a>
-        <label class=" w-48 "  >
+        <label class=" w-full sm:w-48 "  >
             <div class="relative flex w-full flex-col  text-neutral-600 dark:text-neutral-300">
                 <label for="os" class="w-fit pl-0.5 text-gray-700 mb-1"></label>
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="absolute pointer-events-none right-4 top-3 size-5">

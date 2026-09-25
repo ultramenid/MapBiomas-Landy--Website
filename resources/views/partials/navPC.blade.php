@@ -1,15 +1,15 @@
 
 <div class="max-w-6xl mx-auto px-4  ">
-    <div class="sm:flex hidden justify-between px-3">
+    <div class="lg:flex hidden justify-between px-3">
         <a></a>
         <div class="text-gray-300 px-12 py-1 bg-landy text-sm rounded-b flex space-x-4">
             <a href="{{ route(Route::currentRouteName(), 'en') }}" class=" @if(App::getLocale() == 'en') text-white @endif  ">English</a>
             <a href="{{ route(Route::currentRouteName(), 'id') }}" class="@if(App::getLocale() == 'id') text-white @endif">Indonesia</a>
         </div>
     </div>
-    <div class="sm:flex hidden sm:justify-between justify-center items-center  py-2 mt-4">
+    <div class="lg:flex hidden lg:justify-between justify-center items-center  py-2 mt-4">
         <a href="{{ route('index', [app()->getLocale()]) }}"><img src="{{ asset('assets/logo-landy.png') }}" alt="Mapbiomas Fire Indonesia" class="sm:h-12 h-10 select-none"></a>
-    <div class="sm:flex hidden gap-10 items-center select-none">
+    <div class="lg:flex hidden gap-10 items-center select-none">
         <a href="{{ route('about', [app()->getLocale()]) }}" class="text-landy">{{__('about') }}</a>
         {{-- <a href="{{ route('faq', [app()->getLocale()]) }}" class="text-landy">FAQ</a> --}}
         <a href="#" class="text-landy">FAQ</a>

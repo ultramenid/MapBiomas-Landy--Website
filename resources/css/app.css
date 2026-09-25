@@ -1,8 +1,70 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/*
+|--------------------------------------------------------------------------
+| Semantic design tokens (light / dark)
+|--------------------------------------------------------------------------
+| Used by the CMS (Vercel-style monochrome UI). Public frontend keeps its
+| own brand utilities below. Values flip via the `.dark` class on <html>.
+*/
+:root {
+    --canvas: 250 250 250;
+    --surface: 255 255 255;
+    --line: 229 229 229;
+    --line-strong: 212 212 212;
+    --ink: 23 23 23;
+    --ink-muted: 115 115 115;
+    --ink-subtle: 163 163 163;
+    --hover: 245 245 245;
+    --accent: 78 122 94;
+    --accent-hover: 67 107 80;
+    --accent-fg: 255 255 255;
+    --accent-soft: 233 244 237;
+    --danger: 229 72 77;
+    --danger-hover: 217 58 63;
+}
+
+.dark {
+    --canvas: 10 10 10;
+    --surface: 21 21 21;
+    --line: 46 46 46;
+    --line-strong: 64 64 64;
+    --ink: 237 237 237;
+    --ink-muted: 161 161 161;
+    --ink-subtle: 111 111 111;
+    --hover: 31 31 31;
+    --accent: 134 182 150;
+    --accent-hover: 152 196 166;
+    --accent-fg: 10 10 10;
+    --accent-soft: 27 42 32;
+    --danger: 229 72 77;
+    --danger-hover: 242 85 90;
+}
+
+/* CMS typeface — the public frontend keeps Poppins */
+.font-cms {
+    font-family: 'Open Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+}
+
+::selection {
+    background: rgb(var(--accent) / 0.3);
+}
+
+/* Brand green input focus ring, used across CMS form controls */
+.cms-focus:focus {
+    outline: none;
+    border-color: rgb(var(--accent));
+    box-shadow: 0 0 0 3px rgb(var(--accent) / 0.25);
+}
+
+/* x-cloak helper for Alpine */
+[x-cloak] { display: none !important; }
 
 ul > li::marker {
     font-weight: bold;
@@ -33,16 +95,368 @@ a:link {
   text-decoration: none;
 }
 
-/* Add this more specific rule at the end of your file */
-p a:link, p a:visited, p a:hover, p a:active {
+/* Coral links inside frontend content only
+   (scoped so CMS links keep the monochrome CMS look) */
+.frontend p a:link, .frontend p a:visited, .frontend p a:hover, .frontend p a:active {
   color: #E17367 !important;
 }
 
 /* Add this more specific rule at the end of your file */
-li a:link, li a:visited, li a:hover, li a:active {
+.frontend li a:link, .frontend li a:visited, .frontend li a:hover, .frontend li a:active {
   color: #E17367 !important;
 }
 
-td a:link, td a:visited, td a:hover, td a:active {
+.frontend td a:link, .frontend td a:visited, .frontend td a:hover, .frontend td a:active {
   color: #E17367 !important;
+}
+
+/* Keep CMS rich-text content from causing horizontal page overflow on small screens */
+.prose {
+  overflow-wrap: break-word;
+}
+
+.prose iframe {
+  max-width: 100%;
+}
+
+@media (max-width: 1023px) {
+  .prose table {
+    display: block;
+    overflow-x: auto;
+  }
+}
+
+/*
+|--------------------------------------------------------------------------
+| TinyMCE — retheme the bundled oxide skin with the CMS design tokens
+|--------------------------------------------------------------------------
+| The official oxide skins ship hardcoded colors, so every rule below is
+| re-skinned with the semantic tokens from the top of this file (which flip
+| automatically under `html.dark`). Selectors are prefixed with `html` to
+| raise specificity above the skin stylesheet TinyMCE injects at runtime.
+*/
+
+html .tox,
+html .tox-tinymce,
+html .tox.tox-tinymce,
+html .tox-tinymce-aux {
+    font-family: 'Open Sans', ui-sans-serif, system-ui, sans-serif;
+    font-size: 14px;
+    color: rgb(var(--ink));
+}
+
+/* Editor frame — looks like a large CMS input */
+html .tox.tox-tinymce {
+    border: 1px solid rgb(var(--line-strong));
+    border-radius: 8px;
+    box-shadow: none;
+}
+
+/* Menubar + toolbar strip */
+html .tox:not(.tox-tinymce-inline) .tox-editor-header,
+html .tox:not(.tox-tinymce-inline).tox-tinymce--toolbar-sticky-on .tox-editor-header {
+    background-color: rgb(var(--canvas));
+    box-shadow: none;
+    border-bottom: 1px solid rgb(var(--line));
+}
+html .tox:not(.tox-tinymce-inline).tox-tinymce--toolbar-bottom .tox-editor-header {
+    border-top: 1px solid rgb(var(--line));
+    border-bottom: none;
+}
+html .tox .tox-editor-container,
+html .tox .tox-menubar,
+html .tox .tox-toolbar-overlord,
+html .tox .tox-toolbar__primary,
+html .tox .tox-toolbar {
+    background-color: rgb(var(--canvas));
+}
+html .tox .tox-menubar + .tox-toolbar,
+html .tox .tox-menubar + .tox-toolbar-overlord {
+    border-top-color: rgb(var(--line));
+}
+
+/* Toolbar buttons & menubar items — ghost buttons on the canvas strip */
+html .tox .tox-tbtn,
+html .tox .tox-mbtn {
+    background: transparent;
+    border-radius: 6px;
+    color: rgb(var(--ink));
+}
+html .tox .tox-tbtn svg,
+html .tox .tox-mbtn svg,
+html .tox .tox-mbtn:hover:not(:disabled):not(.tox-mbtn--active) svg {
+    fill: rgb(var(--ink));
+}
+html .tox .tox-tbtn:hover:not(:disabled),
+html .tox .tox-tbtn:focus:not(.tox-tbtn--disabled),
+html .tox .tox-mbtn:hover:not(:disabled):not(.tox-mbtn--active),
+html .tox .tox-mbtn:focus:not(:disabled) {
+    background: rgb(var(--hover));
+    box-shadow: none;
+    color: rgb(var(--ink));
+}
+html .tox .tox-tbtn--disabled,
+html .tox .tox-tbtn--disabled:hover,
+html .tox .tox-tbtn:disabled,
+html .tox .tox-tbtn:disabled:hover,
+html .tox .tox-mbtn[disabled] {
+    background: transparent;
+    color: rgb(var(--ink-subtle));
+}
+html .tox .tox-tbtn--disabled svg,
+html .tox .tox-tbtn--disabled:hover svg,
+html .tox .tox-tbtn:disabled svg,
+html .tox .tox-tbtn:disabled:hover svg,
+html .tox .tox-split-button__chevron svg,
+html .tox .tox-mbtn[disabled] svg {
+    fill: rgb(var(--ink-subtle));
+}
+/* Pressed / toggled state gets the soft accent treatment */
+html .tox .tox-tbtn:active,
+html .tox .tox-tbtn.tox-tbtn--active,
+html .tox .tox-tbtn.tox-tbtn--enabled,
+html .tox .tox-tbtn.tox-tbtn--enabled:focus,
+html .tox .tox-tbtn.tox-tbtn--enabled:hover,
+html .tox .tox-mbtn--active,
+html .tox .tox-mbtn:not(:disabled).tox-mbtn--active:focus {
+    background: rgb(var(--accent-soft));
+    box-shadow: none;
+    color: rgb(var(--accent));
+}
+html .tox .tox-tbtn:active svg,
+html .tox .tox-tbtn.tox-tbtn--active svg,
+html .tox .tox-tbtn.tox-tbtn--enabled svg,
+html .tox .tox-tbtn:focus:not(.tox-tbtn--disabled) svg,
+html .tox .tox-mbtn--active svg {
+    fill: rgb(var(--accent));
+}
+html .tox .tox-split-button:hover {
+    box-shadow: inset 0 0 0 9999px rgb(var(--hover));
+}
+
+/* Keyboard focus rings in toolbar / statusbar */
+html .tox .tox-tbtn:focus::after,
+html .tox .tox-tbtn--enabled:focus::after,
+html .tox .tox-mbtn:focus:not(:disabled)::after,
+html .tox .tox-split-button:focus::after,
+html .tox .tox-statusbar a:focus-visible::after,
+html .tox .tox-statusbar__path-item:focus-visible::after,
+html .tox .tox-statusbar__wordcount:focus-visible::after {
+    box-shadow: 0 0 0 2px rgb(var(--accent));
+}
+
+/* Dropdown menus — same recipe as the CMS dropdown component */
+html .tox .tox-menu {
+    background-color: rgb(var(--surface));
+    border: 1px solid rgb(var(--line));
+    border-radius: 8px;
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+html .tox .tox-collection--list .tox-collection__group {
+    border-color: rgb(var(--line));
+}
+html .tox .tox-collection--list .tox-collection__item--enabled:not(.tox-collection__item--state-disabled) {
+    background-color: transparent;
+    color: rgb(var(--ink));
+}
+html .tox .tox-collection--list .tox-collection__item--active:not(.tox-collection__item--state-disabled) {
+    background-color: rgb(var(--hover));
+    color: rgb(var(--ink));
+}
+html .tox .tox-menu .tox-collection__item-checkmark svg {
+    fill: rgb(var(--accent));
+}
+
+/* Floating toolbars (e.g. table context bar) */
+html .tox .tox-pop__dialog {
+    background-color: rgb(var(--surface));
+    border: 1px solid rgb(var(--line));
+    border-radius: 8px;
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+html .tox .tox-pop .tox-toolbar {
+    background-color: rgb(var(--surface));
+}
+html .tox .tox-pop.tox-pop--bottom::after { border-color: rgb(var(--surface)) transparent transparent transparent; }
+html .tox .tox-pop.tox-pop--bottom::before { border-color: rgb(var(--line)) transparent transparent transparent; }
+html .tox .tox-pop.tox-pop--top::after { border-color: transparent transparent rgb(var(--surface)) transparent; }
+html .tox .tox-pop.tox-pop--top::before { border-color: transparent transparent rgb(var(--line)) transparent; }
+html .tox .tox-pop.tox-pop--left::after { border-color: transparent rgb(var(--surface)) transparent transparent; }
+html .tox .tox-pop.tox-pop--left::before { border-color: transparent rgb(var(--line)) transparent transparent; }
+html .tox .tox-pop.tox-pop--right::after { border-color: transparent transparent transparent rgb(var(--surface)); }
+html .tox .tox-pop.tox-pop--right::before { border-color: transparent transparent transparent rgb(var(--line)); }
+
+/* Statusbar */
+html .tox .tox-statusbar {
+    background-color: rgb(var(--canvas));
+    border-top: 1px solid rgb(var(--line));
+    color: rgb(var(--ink-muted));
+}
+html .tox .tox-statusbar a:hover:not(:disabled):not([aria-disabled=true]),
+html .tox .tox-statusbar__path-item:hover:not(:disabled):not([aria-disabled=true]),
+html .tox .tox-statusbar__wordcount:hover:not(:disabled):not([aria-disabled=true]) {
+    color: rgb(var(--ink));
+}
+
+/* Focus highlight around the content area */
+html .tox .tox-edit-area::before {
+    border: 1px solid rgb(var(--accent));
+    border-radius: 2px;
+}
+
+/* Dialogs — matches the CMS modal component */
+html .tox .tox-dialog__backdrop {
+    background-color: rgb(0 0 0 / 0.5);
+}
+html .tox .tox-dialog {
+    background-color: rgb(var(--surface));
+    border-color: rgb(var(--line));
+    border-width: 1px;
+    border-radius: 8px;
+    box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.2), 0 8px 10px -6px rgb(0 0 0 / 0.2);
+}
+html .tox .tox-dialog__header {
+    border-bottom: 1px solid rgb(var(--line));
+    padding: 12px 16px;
+}
+html .tox .tox-dialog__title {
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    color: rgb(var(--ink));
+    text-transform: none;
+}
+html .tox .tox-dialog__body {
+    color: rgb(var(--ink));
+}
+html .tox .tox-dialog__footer {
+    border-top: 1px solid rgb(var(--line));
+    padding: 12px 16px;
+}
+html .tox .tox-dialog__header .tox-button,
+html .tox .tox-button--naked {
+    color: rgb(var(--ink-muted));
+    background-color: transparent;
+}
+html .tox .tox-dialog__header .tox-button:hover,
+html .tox .tox-dialog__header .tox-button:focus,
+html .tox .tox-button--naked:hover:not(:disabled),
+html .tox .tox-button--naked:focus:not(:disabled) {
+    background-color: rgb(var(--hover));
+    color: rgb(var(--ink));
+}
+
+/* Dialog buttons */
+html .tox .tox-button {
+    background-color: rgb(var(--accent));
+    background-image: none;
+    border-color: rgb(var(--accent));
+    border-radius: 6px;
+    color: rgb(var(--accent-fg));
+    font-weight: 500;
+    font-family: inherit;
+}
+html .tox .tox-button:hover:not(:disabled),
+html .tox .tox-button:focus:not(:disabled),
+html .tox .tox-button:active:not(:disabled),
+html .tox .tox-button.tox-button--enabled,
+html .tox .tox-button.tox-button--enabled:hover:not(:disabled),
+html .tox .tox-button.tox-button--enabled:focus:not(:disabled),
+html .tox .tox-button.tox-button--enabled:active:not(:disabled) {
+    background-color: rgb(var(--accent-hover));
+    background-image: none;
+    border-color: rgb(var(--accent-hover));
+    color: rgb(var(--accent-fg));
+}
+html .tox .tox-button::before {
+    border-radius: 7px;
+    box-shadow: 0 0 0 3px rgb(var(--accent) / 0.25);
+}
+html .tox .tox-button--secondary,
+html .tox .tox-button--secondary:focus:not(:disabled) {
+    background-color: rgb(var(--surface));
+    background-image: none;
+    border-color: rgb(var(--line-strong));
+    color: rgb(var(--ink));
+    font-weight: 500;
+}
+html .tox .tox-button--secondary:hover:not(:disabled),
+html .tox .tox-button--secondary:active:not(:disabled) {
+    background-color: rgb(var(--hover));
+    border-color: rgb(var(--line-strong));
+    color: rgb(var(--ink));
+}
+html .tox .tox-button--secondary[disabled] {
+    background-color: rgb(var(--hover));
+    border-color: rgb(var(--line-strong));
+    color: rgb(var(--ink-subtle));
+}
+html .tox .tox-button--secondary.tox-button--enabled,
+html .tox .tox-button--secondary.tox-button--enabled:hover:not(:disabled),
+html .tox .tox-button--secondary.tox-button--enabled:focus:not(:disabled) {
+    background-color: rgb(var(--accent-soft));
+    border-color: rgb(var(--accent));
+    color: rgb(var(--accent));
+}
+
+/* Form controls inside dialogs — matches cms-focus inputs */
+html .tox .tox-label,
+html .tox .tox-toolbar-label {
+    color: rgb(var(--ink));
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.5;
+}
+html .tox .tox-listboxfield .tox-listbox--select,
+html .tox .tox-textarea,
+html .tox .tox-textfield,
+html .tox .tox-toolbar-textfield,
+html .tox .tox-selectfield select {
+    background-color: rgb(var(--surface));
+    border-color: rgb(var(--line-strong));
+    border-radius: 6px;
+    color: rgb(var(--ink));
+    font-family: inherit;
+    font-size: 14px;
+}
+html .tox .tox-listboxfield .tox-listbox--select:focus,
+html .tox .tox-textarea:focus,
+html .tox .tox-textfield:focus,
+html .tox .tox-toolbar-textfield:focus,
+html .tox .tox-selectfield select:focus {
+    background-color: rgb(var(--surface));
+    border-color: rgb(var(--accent));
+    box-shadow: 0 0 0 3px rgb(var(--accent) / 0.25);
+}
+html .tox .tox-textarea[disabled],
+html .tox .tox-textfield[disabled],
+html .tox .tox-toolbar-textfield[disabled],
+html .tox .tox-selectfield select[disabled],
+html .tox .tox-listboxfield .tox-listbox--select[disabled] {
+    background-color: rgb(var(--hover));
+    color: rgb(var(--ink-subtle));
+}
+html .tox .tox-checkbox__input {
+    accent-color: rgb(var(--accent));
+}
+html .tox .tox-form__group .tox-form__group--error {
+    color: rgb(var(--danger));
+}
+
+/* Notifications */
+html .tox .tox-notification {
+    background-color: rgb(var(--accent-soft));
+    border-color: rgb(var(--line));
+    border-radius: 8px;
+    color: rgb(var(--ink));
+    box-shadow: none;
+}
+
+/* Table picker */
+html .tox .tox-insert-table-picker .tox-insert-table-picker__selected {
+    background-color: rgb(var(--accent));
+    border-color: rgb(var(--line));
+}
+html .tox .tox-insert-table-picker .tox-insert-table-picker__label {
+    color: rgb(var(--ink-muted));
 }

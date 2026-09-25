@@ -21,7 +21,7 @@
     <div class="sm:px-0 px-4">
         <div class="max-w-3xl mx-auto bg-white relative  -mt-20 z-20 rounded sm:px-6 px-4 sm:py-12 py-4 border-b border-landy min-h-[40vh]">
             <a class="text-3xl font-semibold capitalize">{{__('legend code') }}</a>
-            <div class="flex mt-4 w-full">
+            <div class="flex flex-col sm:flex-row mt-4 w-full">
                 <div class="bg-landy-2 w-full py-4 px-4 text-center">
                     <a class="font-semibold text-xl"> {{__('Code') }}</a>
                     <ul class="list-number mt-3">

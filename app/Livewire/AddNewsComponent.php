@@ -17,6 +17,17 @@ class AddNewsComponent extends Component
     public $publishdate, $titleID, $titleEN, $descriptionID, $descriptionEN, $contentID, $contentEN, $category, $subcategory, $photo, $isactive=0;
 
     public function uploadImage(){
+        $allowedMimes = [
+            'image/png', 'image/jpeg', 'image/bmp', 'image/gif', 'image/webp',
+            'video/mp4', 'video/x-msvideo', 'video/avi', 'video/3gpp', 'video/quicktime', 'audio/mp4', 'audio/x-m4a',
+        ];
+        if (!in_array(strtolower($this->photo->getClientOriginalExtension()), ['png', 'jpeg', 'bmp', 'gif','jpg','webp','mp4', 'avi', '3gp', 'mov', 'm4a'])
+            || !in_array(strtolower($this->photo->getMimeType()), $allowedMimes)) {
+            $this->reset('photo');
+            Toaster::error('File not supported!');
+            return null;
+        }
+
         $file = $this->photo->store('public/files/photos');
         $foto = $this->photo->hashName();
 
@@ -39,6 +50,10 @@ class AddNewsComponent extends Component
 
     public function storePosts(){
         if($this->manualValidation()){
+            $photo = $this->uploadImage();
+            if ($photo === null) {
+                return;
+            }
             DB::table('news')->insert([
                 'publishdate' => $this->publishdate,
                 'titleID' => $this->titleID,
@@ -49,7 +64,7 @@ class AddNewsComponent extends Component
                 'descriptionEN' => $this->descriptionEN,
                 'contentID' => $this->contentID,
                 'contentEN' => $this->contentEN,
-                'img' => $this->uploadImage(),
+                'img' => $photo,
                 'status' => $this->isactive,
                 'created_at' => Carbon::now('Asia/Jakarta')
             ]);
